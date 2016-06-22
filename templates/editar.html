@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Editar Tweet</h1>
+    <br>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <br>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <input type="submit"  value="Cambiar tweet">
+    </form>
+
+</body>
+</html>

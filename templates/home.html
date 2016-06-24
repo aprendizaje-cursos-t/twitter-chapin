@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -99,13 +100,23 @@
     {% for actual in todos %}
     <div class="col-md-12">
         <div class="jumbotron">
-            <a href="{% url 'editar-tweet' actual.id %}">{{actual.text}}</a>
+            <div class="col-md-2">
+                {% if actual.image %}
+                <img src="media/{{ actual.image }}" alt="" style="width: 100px; height:80px">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <a href="{% url 'editar-tweet' actual.id %}">{{actual.text}}</a>
+                <br>
+                <small>{{ actual.date|timesince }}</small>
+                <br>
+                <small>{{ actual.date }}</small>
+                <br>
+                <small>{{ actual.user  }} </small>
+            </div>
             <br>
-            <small>{{ actual.email }}</small>
             <br>
-            <small>{{ actual.date }}</small>
-            <br>
-            <small>{{ actual.user  }} </small>
+
         </div>
 
         <br>

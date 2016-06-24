@@ -17,11 +17,15 @@
     {% endif %}
     <br>
 
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
         <br>
-        <input type="submit"  value="Cambiar tweet">
+        <input type="submit"  value="Enviar Datos">
+        <br>
+        {%if form_editar%}
+        <a href="{% url "eliminar-tweet" form_editar.id %}">eliminar</a>
+        {%endif%}
     </form>
 
 </body>

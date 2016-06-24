@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from .models import Tweet
 from .forms import TweetForm
 from django.contrib.auth.models import User
@@ -42,8 +42,34 @@ class EditarTweet(UpdateView):
     context_object_name = 'form_editar'
     form_class = TweetForm
 
+    def get_form(self, form_class=None):
+        form = super(EditarTweet, self).get_form(form_class)
+        form.fields['user'].widget = forms.HiddenInput()
+        return form
+
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS, 'Has cambiando tu tweet.')
 
         return reverse('editar-tweet', args=[self.object.id])
+
+
+class CrearTweet(CreateView):
+    model = Tweet
+    template_name = 'editar.html'
+    form_class = TweetForm
+    context_object_name = 'form_editar'
+
+    def get_form(self, form_class=None):
+        form = super(CrearTweet, self).get_form(form_class)
+        return form
+
+
+class EliminarTweet(DeleteView):
+    model = Tweet
+    template_name = 'eliminar.html'
+    pk_url_kwarg = 'pk'
+    slug_url_kwarg = 'id'
+    slug_field = 'id'
+    context_object_name = 'tweet'
+    success_url = '/'

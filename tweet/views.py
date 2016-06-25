@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import TemplateView
 from .models import Tweet
 from .forms import TweetForm
 from django.contrib.auth.models import User
@@ -7,6 +8,8 @@ import datetime
 from django import forms
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.http import JsonResponse, HttpResponse
+import json
 
 
 class HomeView(ListView):
@@ -73,3 +76,23 @@ class EliminarTweet(DeleteView):
     slug_field = 'id'
     context_object_name = 'tweet'
     success_url = '/'
+
+
+class TweetRealTime(TemplateView):
+    template_name = 'tweets_real_time.html'
+
+
+def lista_tweet(request):
+    todos = Tweet.objects.all().order_by('-id')
+    tweets = []
+    for tweet_actual in todos:
+        tweets.append({
+                "id": tweet_actual.id,
+                "text": tweet_actual.text,
+                "user": tweet_actual.user.username
+            })
+    return HttpResponse(
+        json.dumps(tweets), content_type="application/json"
+    )
+
+
